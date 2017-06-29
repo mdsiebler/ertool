@@ -5286,5 +5286,16 @@
 			<Condition FieldPosition="0" ConditionName="Size" Operation="NotEqualTo" Value=""/>
 		</Expression>
 	</Formula>
-	
+
+	<Formula Categories="configuration;failure">
+		<Name>&lt;font color='#CC3300'&gt;{Condition:SectionName}&lt;/font&gt; There is an asynchronous AAA, SLM or Verify Action &lt;font color='#CC3300'&gt;{Condition:ActionName}&lt;/font&gt; </Name>
+		<Expression LogLevel="Critical">
+			<Section Name="-config" Wildcard="True" XPath="/Root/text()"/>
+			<Section Name=".cfg" Wildcard="True" XPath="/Root/text()"/>
+			<RegExp>*</RegExp>
+			<Condition FieldPosition="1" RegGroup="All" ConditionName="ActionName" Operation="NotEqualTo" Value="" NextOperation="And">action \"([a-zA-Z-_.0-9]+)\"\W+(\w+\W+)*?(asynchronous on|exit)</Condition>
+			<Condition FieldPosition="3" RegGroup="AllResult" ConditionName="ActionType" Operation="NotEqualTo" Value="exit">action \"{Condition:ActionName}\"\W+(\w+\W+)*?(type aaa|type slm|type verify|exit)</Condition>
+		</Expression>
+	</Formula>
+
 </Analytics>
